@@ -19,7 +19,7 @@ known_faces_encodings = []
 known_faces_names = []
 
 for file in os.listdir(KnownFacesDir):
-    # Load a second picture and learn how to recognize it.
+    # Load a picture and learn how to recognize it.
     image = face_recognition.load_image_file(f"{KnownFacesDir}/{file}")
     known_faces_encodings.append(face_recognition.face_encodings(image)[0])
     known_faces_names.append(file[0:-4])

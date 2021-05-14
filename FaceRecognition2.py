@@ -2,6 +2,7 @@ import face_recognition
 import os
 import cv2
 
+
 KnownFacesDir = 'known_faces'
 UnknownFacesDir = 'unknown_faces'
 
@@ -13,7 +14,7 @@ known_faces_encodings = []
 known_faces_names = []
 
 for file in os.listdir(KnownFacesDir):
-    # Load a second picture and learn how to recognize it.
+    # Load a picture and learn how to recognize it.
     image = face_recognition.load_image_file(f"{KnownFacesDir}/{file}")
     known_faces_encodings.append(face_recognition.face_encodings(image)[0])
     known_faces_names.append(file[0:-4])
@@ -40,10 +41,15 @@ for UnknownImage in os.listdir(f"{UnknownFacesDir}"):
         print(name)
 
         # Draw a box around the face
-        cv2.rectangle(cv2_image, (left - 20, top - 20), (right + 20, bottom + 40), (0, 0, 255), 2)
+        if name == "Unknown":
+            cv2.rectangle(cv2_image, (left - 20, top - 20), (right + 20, bottom + 40), (0, 0, 255), 2)
+            # Draw a label for a name below the face
+            cv2.rectangle(cv2_image, (left - 20, bottom + 40 - 25), (right + 20, bottom + 40), (0, 0, 255), cv2.FILLED)
+        else:
+            cv2.rectangle(cv2_image, (left - 20, top - 20), (right + 20, bottom + 40), (0, 255, 0), 2)
+            # Draw a label for a name below the face
+            cv2.rectangle(cv2_image, (left - 20, bottom + 40 - 25), (right + 20, bottom + 40), (0, 255, 0), cv2.FILLED)
 
-        # Draw a label with a name below the face
-        cv2.rectangle(cv2_image, (left - 20, bottom + 40 - 25), (right + 20, bottom + 40), (0, 0, 255), cv2.FILLED)
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(cv2_image, name, (left - 20 + 6, bottom + 40 - 6), font, 0.4, (255, 255, 255), 1)
 
