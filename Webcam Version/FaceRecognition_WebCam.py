@@ -8,7 +8,7 @@ UnknownFacesDir = 'unknown_faces'
 
 process_this_frame = True
 n = 0
-tolerance = 0.6
+tolerance = 0.57
 
 print("loading known faces")
 
@@ -28,7 +28,9 @@ for file in os.listdir(f"../{KnownFacesDir}"):
     known_faces_names.append(file[0:-4])
 
 print("known faces loaded")
-print("Showing Video")
+print("Video on")
+print("\n\n" + "Faces found:\n" + "-" * 50)
+
 
 while True:
     # Grab a single frame of video and mirror it
@@ -42,7 +44,7 @@ while True:
     rgb_small_frame = small_frame[:, :, ::-1]
 
     # Only process every other frame of video to save time
-    if process_this_frame and n % 10 == 0:
+    if process_this_frame and n % 20 == 0:
         # Find all the faces and face encodings in the current frame of video
         face_locations = face_recognition.face_locations(rgb_small_frame)
         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
@@ -55,8 +57,8 @@ while True:
             for index, val in enumerate(results):
                 if val:
                     name = known_faces_names[index]
-            print(name)
 
+            print(name)
             face_names.append(name)
 
     n += 1
@@ -91,7 +93,10 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+print("-" * 50)
+print("Completed")
+
 # Release handle to the webcam
 video_capture.release()
 cv2.destroyAllWindows()
-print("Completed")
+
